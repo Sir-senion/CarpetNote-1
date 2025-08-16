@@ -1,0 +1,697 @@
+/* Сброс стилей и базовые настройки */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+    background-color: #F2F2F7;
+    color: #000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+}
+
+/* iOS цвета */
+:root {
+    --ios-blue: #007AFF;
+    --ios-green: #34C759;
+    --ios-red: #FF3B30;
+    --ios-gray: #8E8E93;
+    --ios-light-gray: #F2F2F7;
+    --ios-separator: #C6C6C8;
+    --ios-card-bg: #FFFFFF;
+    --ios-text: #000000;
+    --ios-secondary-text: #8E8E93;
+}
+
+/* Статус-бар для iOS */
+.status-bar {
+    height: env(safe-area-inset-top);
+    background: white;
+}
+
+/* Основное приложение */
+#app {
+    min-height: 100vh;
+    background-color: var(--ios-light-gray);
+}
+
+/* Навигационная панель */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: white;
+    border-bottom: 1px solid var(--ios-separator);
+}
+
+.app-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ios-text);
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: var(--ios-blue);
+    font-size: 17px;
+    font-weight: 500;
+    padding: 8px 0;
+    cursor: pointer;
+    min-width: 48px;
+    text-align: center;
+}
+
+.nav-button:active {
+    opacity: 0.3;
+}
+
+/* Выбор даты */
+.date-selector {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: white;
+    border-bottom: 1px solid var(--ios-separator);
+}
+
+.date-nav-btn {
+    background: none;
+    border: none;
+    color: var(--ios-blue);
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+.date-nav-btn:active {
+    opacity: 0.3;
+}
+
+.date-input {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+    color: var(--ios-text);
+    outline: none;
+}
+
+/* Контейнер записей */
+.records-container {
+    padding: 16px;
+    min-height: calc(100vh - 200px);
+}
+
+.records-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Карточка записи */
+.record-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.record-card:active {
+    transform: scale(0.98);
+}
+
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.record-address {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ios-text);
+    flex: 1;
+    margin-right: 16px;
+}
+
+.record-deadline {
+    font-size: 14px;
+    color: var(--ios-gray);
+    margin-top: 4px;
+}
+
+.record-price {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ios-text);
+    text-align: right;
+}
+
+.record-area {
+    font-size: 14px;
+    color: var(--ios-gray);
+    text-align: right;
+}
+
+.record-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.carpet-count {
+    font-size: 14px;
+    color: var(--ios-gray);
+}
+
+.status-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.done {
+    background-color: var(--ios-green);
+}
+
+.status-dot.pending {
+    background-color: var(--ios-gray);
+}
+
+.status-text {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status-text.done {
+    color: var(--ios-green);
+}
+
+.status-text.pending {
+    color: var(--ios-gray);
+}
+
+/* Пустое состояние */
+.empty-state {
+    text-align: center;
+    padding: 64px 16px;
+}
+
+.empty-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+.empty-title {
+    font-size: 16px;
+    color: var(--ios-gray);
+    margin-bottom: 8px;
+}
+
+.empty-subtitle {
+    font-size: 14px;
+    color: var(--ios-gray);
+}
+
+/* Плавающая кнопка */
+.fab {
+    position: fixed;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    background: var(--ios-blue);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0,122,255,0.3);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s ease;
+}
+
+.fab:active {
+    transform: scale(0.95);
+}
+
+/* Модальные окна */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--ios-separator);
+}
+
+.modal-header h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ios-text);
+}
+
+.modal-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 8px 0;
+    cursor: pointer;
+    min-width: 48px;
+}
+
+.modal-btn.cancel {
+    color: var(--ios-red);
+}
+
+.modal-btn.save {
+    color: var(--ios-blue);
+}
+
+.modal-btn:active {
+    opacity: 0.3;
+}
+
+.modal-body {
+    padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+
+/* Формы */
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ios-gray);
+    margin-bottom: 8px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid var(--ios-separator);
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+    color: var(--ios-text);
+    outline: none;
+}
+
+.form-input:focus {
+    border-color: var(--ios-blue);
+}
+
+/* Переключатель */
+.switch-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.switch-label {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ios-text);
+}
+
+.switch {
+    position: relative;
+    width: 50px;
+    height: 30px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 30px;
+}
+
+.switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.switch input:checked + .switch-slider {
+    background-color: var(--ios-green);
+}
+
+.switch input:checked + .switch-slider:before {
+    transform: translateX(20px);
+}
+
+/* Секция */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ios-text);
+}
+
+.add-btn {
+    background: none;
+    border: none;
+    color: var(--ios-blue);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 8px 0;
+}
+
+.add-btn:active {
+    opacity: 0.3;
+}
+
+/* Список ковров */
+.carpets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.carpet-item {
+    background: var(--ios-light-gray);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.carpet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.carpet-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ios-text);
+}
+
+.remove-btn {
+    background: none;
+    border: none;
+    color: var(--ios-red);
+    font-size: 14px;
+    cursor: pointer;
+    padding: 4px 0;
+}
+
+.remove-btn:active {
+    opacity: 0.3;
+}
+
+.carpet-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-label {
+    font-size: 12px;
+    color: var(--ios-gray);
+    margin-bottom: 4px;
+}
+
+.carpet-input {
+    padding: 8px 12px;
+    border: 1px solid var(--ios-separator);
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    color: var(--ios-text);
+    outline: none;
+}
+
+.carpet-input:focus {
+    border-color: var(--ios-blue);
+}
+
+.area-display {
+    padding: 8px 12px;
+    background: var(--ios-light-gray);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ios-text);
+    text-align: center;
+}
+
+/* Итоговая карточка */
+.totals-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-top: 16px;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.total-row:last-of-type {
+    margin-bottom: 12px;
+}
+
+.total-price {
+    color: var(--ios-green);
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.rate-info {
+    font-size: 12px;
+    color: var(--ios-gray);
+    text-align: center;
+}
+
+/* Радио группа */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--ios-separator);
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: white;
+    cursor: pointer;
+    position: relative;
+}
+
+.radio-option input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.radio-text {
+    font-size: 16px;
+    color: var(--ios-text);
+    flex: 1;
+}
+
+.radio-check {
+    color: var(--ios-blue);
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.radio-option input:checked ~ .radio-check {
+    opacity: 1;
+}
+
+.radio-option:active {
+    background: var(--ios-light-gray);
+}
+
+/* Информация о приложении */
+.app-info {
+    text-align: center;
+    padding-top: 24px;
+    color: var(--ios-gray);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Уведомления */
+.toast {
+    position: fixed;
+    top: calc(20px + env(safe-area-inset-top));
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 2000;
+    animation: toastShow 0.3s ease;
+}
+
+@keyframes toastShow {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.toast.error {
+    background: var(--ios-red);
+}
+
+.toast.success {
+    background: var(--ios-green);
+}
+
+/* Адаптивность для больших экранов */
+@media (min-width: 768px) {
+    #app {
+        max-width: 400px;
+        margin: 0 auto;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    
+    .modal-content {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+/* Темная тема (опционально) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --ios-card-bg: #1C1C1E;
+        --ios-text: #FFFFFF;
+        --ios-secondary-text: #8E8E93;
+        --ios-light-gray: #000000;
+        --ios-separator: #38383A;
+    }
+    
+    body {
+        background-color: #000000;
+        color: #FFFFFF;
+    }
+    
+    .navbar,
+    .date-selector,
+    .record-card,
+    .modal-content,
+    .totals-card,
+    .radio-option,
+    .form-input,
+    .carpet-input {
+        background: var(--ios-card-bg);
+        color: var(--ios-text);
+    }
+    
+    .carpet-item,
+    .area-display {
+        background: #2C2C2E;
+    }
+}

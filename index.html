@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Carpet Notes Lite">
+    <meta name="theme-color" content="#007AFF">
+    
+    <title>Carpet Notes Lite</title>
+    <meta name="description" content="Мобильное приложение для учета работ по чистке ковров">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwN0FGRiIvPgo8cGF0aCBkPSJNNiAxMGgxOHYySDZ6bTAgNGgxOHYySDZ6bTAgNGgxOHYySDZ6bTAgNGgxNHYySDZ6IiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Статус-бар для iOS -->
+    <div class="status-bar"></div>
+    
+    <!-- Главный экран -->
+    <div id="app">
+        <!-- Навигационная панель -->
+        <header class="navbar">
+            <button id="settingsBtn" class="nav-button">Настройки</button>
+            <h1 class="app-title">Carpet Notes Lite</h1>
+            <button id="addBtn" class="nav-button">+</button>
+        </header>
+
+        <!-- Выбор даты -->
+        <div class="date-selector">
+            <button id="prevDateBtn" class="date-nav-btn">‹ Назад</button>
+            <input type="date" id="dateInput" class="date-input">
+            <button id="nextDateBtn" class="date-nav-btn">Вперед ›</button>
+        </div>
+
+        <!-- Список записей -->
+        <div class="records-container">
+            <div id="recordsList" class="records-list"></div>
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <div class="empty-icon">📝</div>
+                <p class="empty-title">Записей нет</p>
+                <p class="empty-subtitle">Нажмите + для добавления</p>
+            </div>
+        </div>
+
+        <!-- Плавающая кнопка добавления -->
+        <button id="fabBtn" class="fab">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Модальное окно добавления/редактирования записи -->
+    <div id="recordModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="cancelBtn" class="modal-btn cancel">Отмена</button>
+                <h2 id="modalTitle">Новая запись</h2>
+                <button id="saveBtn" class="modal-btn save">Готово</button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Адрес *</label>
+                    <input type="text" id="addressInput" class="form-input" placeholder="Введите адрес">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Дедлайн</label>
+                    <input type="date" id="deadlineInput" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <div class="switch-container">
+                        <span class="switch-label">Выполнено</span>
+                        <label class="switch">
+                            <input type="checkbox" id="isDoneSwitch">
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="section-header">
+                        <h3 class="section-title">Ковры</h3>
+                        <button id="addCarpetBtn" class="add-btn">+ Добавить</button>
+                    </div>
+                    <div id="carpetsList" class="carpets-list"></div>
+                </div>
+                
+                <!-- Итоги -->
+                <div class="totals-card">
+                    <div class="total-row">
+                        <span>Общая площадь:</span>
+                        <span id="totalArea">0.0 м²</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Итоговая цена:</span>
+                        <span id="totalPrice" class="total-price">₸0</span>
+                    </div>
+                    <div class="rate-info">
+                        Тариф: <span id="currentRate">₸1,000</span> за м²
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно настроек -->
+    <div id="settingsModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="settingsSaveBtn" class="modal-btn save">Готово</button>
+                <h2>Настройки</h2>
+                <div style="width: 48px;"></div>
+            </div>
+            
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Тариф за м²</label>
+                    <input type="number" id="rateInput" class="form-input" placeholder="1000" min="0">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Валюта</label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="currency" value="KZT" checked>
+                            <span class="radio-text">Тенге (₸)</span>
+                            <span class="radio-check">✓</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="currency" value="RUB">
+                            <span class="radio-text">Рубли (₽)</span>
+                            <span class="radio-check">✓</span>
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="currency" value="USD">
+                            <span class="radio-text">Доллары ($)</span>
+                            <span class="radio-check">✓</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="app-info">
+                    <p>Carpet Notes Lite v1.0</p>
+                    <p>Приложение для мастеров чистки ковров</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="toast" class="toast" style="display: none;"></div>
+
+    <script src="app.js"></script>
+    <script>
+        // Регистрация Service Worker для PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('SW зарегистрирован: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('Ошибка регистрации SW: ', registrationError);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
